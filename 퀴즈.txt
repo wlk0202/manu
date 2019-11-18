@@ -1,0 +1,66 @@
+dll
+1.mfc 동적 연결 라이브러리 생성
+
+2.dll형식 공유 mfc dll을 상요하는 기본 dll
+
+3..cpp파일에 아래 코드 추가
+   extern "C" int PASCAL EXPORT Add(int a, int b) {
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return (a + b);
+}
+
+4. def에 Add 추가
+
+5..h에 extern "C" int PASCAL EXPORT Add(int a, int b); 추가
+
+6.빌드 해보기, 성공이 떠야함
+
+7. 닫고 새롭게 mfc앱 대화상자기반으로 만들기
+
+8. 계산기 만들어주고 int a = GetDlgItemInt(IDC_EDIT1); 를 추가
+	             int b = GetDlgItemInt(IDC_EDIT2);
+	             int c = a + b;
+	             SetDlgItemInt(IDC_EDIT3, c);
+
+9. 솔루션 탐색기에 소스파일 우클릭 추가 -> 기존 항목 추가 -> repos 누르고 라이브러리 파일 찾아서-> Debug안에 .lib파일 선택
+
+10. 끝
+
+
+
+정적 라이브러리
+1. 정적 라이브러리 생성
+2. .cpp파일에 int Add(int a, int b) {  추가한다.
+	       return a + b;
+             }
+
+3. 헤더파일 -> 항목추가 -> StaticLib.h 생성
+
+4. 빌드-> 솔루션 빌드 한다.
+
+5. 새로 mfc앱->대화상자기반으로 프로젝트를 만든다.
+
+6. 계산기 만들어주고 int a = GetDlgItemInt(IDC_EDIT1); 를 추가
+	             int b = GetDlgItemInt(IDC_EDIT2);
+	             int c = a + b;
+	             SetDlgItemInt(IDC_EDIT3, c);
+
+7. 계산기 코드 위에 #include "../StaticLib/StaticLib.h" 추가 (StaticLib뒤 숫자 확인하고 넣을것)
+
+8. 솔루션 탐색기 MFCApplication숫자 우클릭->추가-> 기존항목추가->StaticLib -> Debug의 .lib 파일 추가
+
+
+사진띄우기
+
+1.mfc앱에서 대화상자 기반으로 만들기
+
+2. 파일명.h에서 7번째줄에 #include <atlimage.h> 넣어주고
+   바로 밑에 class C파일명Dlg : 안에 public: 바로 밑에 CImage img;를 넣어준다.
+
+3. 파일명Dlg.cpp에서 BOOL C파일명Dlg::OnInitDialog()함수 안에 맨끝에 return TRUE;의 바로 위에 img.Load(L"p.png");를 넣어준다.
+
+4. 파일명Dlg.cpp에서 void C파일명Dlg::OnPaint()에서 else 안에 CPaintDC dc(this);
+		                                              img.BitBlt(dc.m_hDC, 0, 0);
+		                                              dc.TextOutW(10, 60, L"Hello!");를 넣어준다.
+
+5. 사진 파일을 프로젝트의 폴더에 넣어준다.
